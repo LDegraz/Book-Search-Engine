@@ -1,9 +1,18 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { SAVE_BOOK } from '../utils/mutations';
+
+interface Book {
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors?: string[];
+  };
+}
 
 const SearchBooks: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<Book[]>([]);
   const [showAlert, setShowAlert] = useState(false);
   const [validated, setValidated] = useState(false);
 
@@ -37,10 +46,9 @@ const SearchBooks: React.FC = () => {
   };
 
   const handleSaveBook = (bookId: string) => {
-    // Logic to save the book ID (e.g., using local storage)
-    // Example:
-    // saveBookId(bookId);
+    // Logic to save the book ID (e.g., using local storage or a mutation)
     console.log(`Book with ID ${bookId} saved!`);
+    // Example: saveBookId(bookId);
   };
 
   return (
@@ -67,7 +75,7 @@ const SearchBooks: React.FC = () => {
       </Alert>
 
       <div>
-        {results.map((book: any) => (
+        {results.map((book) => (
           <div key={book.id}>
             <h3>{book.volumeInfo.title}</h3>
             <p>{book.volumeInfo.authors?.join(', ')}</p>

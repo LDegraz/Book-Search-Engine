@@ -2,20 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { getSavedBookIds, removeBookId } from '../utils/localStorage';
 import { Alert, Button } from 'react-bootstrap';
 
+interface Book {
+  id: string;
+  title: string;
+}
+
 const SavedBooks: React.FC = () => {
-  const [savedBooks, setSavedBooks] = useState<string[]>([]);
+  const [savedBooks, setSavedBooks] = useState<Book[]>([]);
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     const savedIds = getSavedBookIds();
-    setSavedBooks(savedIds);
+    // Assuming getSavedBookIds returns an array of book IDs
+    const savedBooks = savedIds.map(id => ({ id, title: 'Unknown Title' })); // Replace 'Unknown Title' with actual title if available
+    setSavedBooks(savedBooks);
   }, []);
 
   const handleRemoveBook = (bookId: string) => {
-    // Remove book ID from local storage
     removeBookId(bookId);
-    setSavedBooks((prev) => prev.filter((id) => id !== bookId));
-    setShowAlert(true); // Show alert after removing a book
+    setSavedBooks((prev) => prev.filter((book) => book.id !== bookId));
+    setShowAlert(true);
   };
 
   return (
@@ -29,10 +35,10 @@ const SavedBooks: React.FC = () => {
       {savedBooks.length === 0 ? (
         <p>No saved books</p>
       ) : (
-        savedBooks.map((bookId) => (
-          <div key={bookId} className='mb-3'>
-            <h3>{bookId}</h3>
-            <Button variant='danger' onClick={() => handleRemoveBook(bookId)}>
+        savedBooks.map((book) => (
+          <div key={book.id} className='mb-3'>
+            <h3>{book.title}</h3>
+            <Button variant='danger' onClick={() => handleRemoveBook(book.id)}>
               Remove
             </Button>
           </div>

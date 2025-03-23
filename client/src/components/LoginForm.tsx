@@ -37,26 +37,29 @@ const LoginForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
       const { token } = await response.json();
       Auth.login(token);
       handleModalClose(); // Close the modal after successful login
+      setShowAlert(false); // Reset alert on successful login
+
+      // Reset form data
+      setUserFormData({
+        username: '',
+        email: '',
+        password: '',
+        savedBooks: [],
+      });
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
-
-    // Reset form data
-    setUserFormData({
-      username: '',
-      email: '',
-      password: '',
-      savedBooks: [],
-    });
   };
 
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
-        <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your login credentials!
-        </Alert>
+        {showAlert && (
+          <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
+            Something went wrong with your login credentials!
+          </Alert>
+        )}
         <Form.Group className='mb-3'>
           <Form.Label htmlFor='email'>Email</Form.Label>
           <Form.Control

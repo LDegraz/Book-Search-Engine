@@ -40,26 +40,29 @@ const SignupForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
       const { token } = await response.json();
       Auth.login(token);
       handleModalClose(); // Close the modal after successful signup
+
+      // Reset form data
+      setUserFormData({
+        username: '',
+        email: '',
+        password: '',
+        savedBooks: [],
+      });
+      setShowAlert(false); // Reset alert on successful signup
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
-
-    // Reset form data
-    setUserFormData({
-      username: '',
-      email: '',
-      password: '',
-      savedBooks: [],
-    });
   };
 
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
-        <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your signup!
-        </Alert>
+        {showAlert && (
+          <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
+            Something went wrong with your signup!
+          </Alert>
+        )}
 
         <Form.Group className='mb-3'>
           <Form.Label htmlFor='username'>Username</Form.Label>
