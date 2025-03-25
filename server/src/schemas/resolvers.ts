@@ -1,8 +1,8 @@
-import { UserInputError, AuthenticationError } from 'apollo-server-express';
+//import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import User from '../models/User.js';
-import { signToken } from '../services/auth.js';
-import type { Resolvers } from '@apollo/server-express';
-import type { Context } from '../types/context';
+import { signToken, AuthenticationError } from '../services/auth.js';
+//import type { Resolvers } from '@apollo/server-express';
+//import type { Context } from '../types/context';
 import type { UserDocument } from '../models/User';
 
 interface MeArgs {}
@@ -33,9 +33,9 @@ interface RemoveBookArgs {
     bookId: string;
 }
 
-const resolvers: Resolvers = {
+const resolvers: any = {
     Query: {
-        me: async (_parent: undefined, _args: MeArgs, context: Context): Promise<UserDocument | null> => {
+        me: async (_parent: undefined, _args: MeArgs, context: any): Promise<UserDocument | null> => {
             if (!context.user) {
                 throw new AuthenticationError('You must be logged in');
             }
@@ -50,7 +50,7 @@ const resolvers: Resolvers = {
             const user = await User.findOne({ email });
 
             if (!user) {
-                throw new UserInputError('No user found with this email address');
+                throw new AuthenticationError('No user found with this email address');
             }
 
             const correctPw = await user.isCorrectPassword(password);
@@ -68,7 +68,7 @@ const resolvers: Resolvers = {
             return { token, user };
         },
 
-        saveBook: async (_parent: undefined, { input }: SaveBookArgs, context: Context): Promise<UserDocument | null> => {
+        saveBook: async (_parent: undefined, { input }: SaveBookArgs, context: any): Promise<UserDocument | null> => {
             if (!context.user) {
                 throw new AuthenticationError('You must be logged in');
             }
@@ -82,7 +82,7 @@ const resolvers: Resolvers = {
             return updatedUser;
         },
 
-        removeBook: async (_parent: undefined, { bookId }: RemoveBookArgs, context: Context): Promise<UserDocument | null> => {
+        removeBook: async (_parent: undefined, { bookId }: RemoveBookArgs, context: any): Promise<UserDocument | null> => {
             if (!context.user) {
                 throw new AuthenticationError('You must be logged in');
             }
