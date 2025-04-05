@@ -72,7 +72,7 @@ JWT_SECRET=your-secret-key
 
 4. Run the development server:
 ```bash
-npm run dev
+npm run develop
 ```
 
 This will start both the client and server using `concurrently`.
