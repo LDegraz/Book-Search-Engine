@@ -101,7 +101,7 @@ This will start both the client and server using `concurrently`.
 ---
 
 ## 📸 Screenshots
-![Book Search Engine Screenshot](../Book-Search-Engine/client/src/assets/homepage.png "Screenshot of the Book Search Engine")
+![Book Search Engine Screenshot](/client/src/assets/homepage.png "Screenshot of the Book Search Engine")
 
 ---
 
